@@ -38,3 +38,13 @@ Feedback welcome — how does it perform on your GPU? Where does it break? PRs a
 ## License
 
 MIT © AETumi Corp
+
+## Explore the AETumi library
+
+Production-ready 3D web you can own the source of — from [AETumi](https://aetumi.app), the AI-native 3D web platform:
+
+- [Three.js website templates & 3D components](https://aetumi.app/threejs/)
+- [WebGL website examples, shaders & components](https://aetumi.app/webgl/)
+- [3D website templates & examples](https://aetumi.app/3d-websites/)
+
+Build 3D web directly from your AI assistant with the [AETumi MCP for AI coding](https://aetumi.app/mcp/) — `claude mcp add --transport http aetumi https://mcp.aetumi.app`

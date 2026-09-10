@@ -1,0 +1,116 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Instancing + LOD Performance — AETumi</title>
+<style id="ae-nf">.sale-bar s{visibility:hidden!important}</style><style>
+.news-article{font-size:15px;color:var(--muted)}
+.news-article>*{margin-left:0;margin-right:0}
+.news-article p{margin:0 0 13px;line-height:1.75}
+.news-article h2{font-family:'Futura AE',Futura,system-ui;font-size:22px;color:#f5f4f7;letter-spacing:-.02em;margin:32px 0 10px}
+.news-article h3{font-size:16px;color:#f0eff4;margin:20px 0 6px}
+.news-article a{color:#9fb4ff;text-decoration:none;border-bottom:1px solid rgba(159,180,255,.35)}
+.news-article ul{margin:0 0 14px;padding-left:20px}.news-article li{margin:0 0 6px}
+.news-article strong{color:#f5f4f7}.news-article em{color:#e7e6ee;font-style:italic}
+.news-article code{background:rgba(255,255,255,.06);padding:2px 6px;border-radius:6px;font-size:13.5px}
+.news-article blockquote{border-left:3px solid #5ea0ff;margin:0 0 15px;padding:4px 0 4px 16px;color:#c8cad2}
+.news-article figure{margin:24px 0}
+.news-article figure svg,.news-article figure img,.news-article figure video{display:block;width:100%;height:auto;border-radius:14px}
+.news-article figcaption{color:#8e8893;font-size:12.5px;margin-top:8px;text-align:center}
+.ae-vwrap{margin:24px 0}
+.ae-vfig{position:relative;display:block;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.10);background:#0c0b10}
+.ae-vfig video,.ae-vfig img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:0}
+.ae-vtag{position:absolute;left:12px;bottom:12px;z-index:2;font-size:12px;color:#fff;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.18);padding:4px 11px;border-radius:100px}
+.ae-code{background:#0f0e15;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:15px 17px;overflow-x:auto;font-size:13px;line-height:1.6;margin:0 0 15px}
+.ae-code code{background:none;padding:0}
+.ae-tw{overflow-x:auto;margin:0 0 16px}
+.ae-tbl{width:100%;border-collapse:collapse;font-size:14px;min-width:480px}
+.ae-tbl th,.ae-tbl td{text-align:left;padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.09);vertical-align:top}
+.ae-tbl th{color:#8e8893;font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:700}
+.ae-tbl td:first-child{color:#f5f4f7;font-weight:600}
+.ae-cta{display:inline-block;margin:8px 0 0;padding:12px 26px;border-radius:100px;background:linear-gradient(135deg,#4d7cff,#5ea0ff);color:#fff!important;font-weight:700;text-decoration:none;font-size:14px;border:0!important}
+.ae-feat{border-top:1px solid rgba(255,255,255,.09);margin:38px 0 0;padding:24px 0 0}
+.ae-feat h2{font-size:19px;margin:0 0 4px}
+.ae-feat .sub{color:#8e8893;font-size:13px;margin:0 0 14px}
+.ae-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ae-grid .ae-vwrap{margin:0}
+@media(max-width:560px){.ae-grid{grid-template-columns:1fr}}
+.news-hero .eyebrow{margin:0 0 4px}
+.news-hero .page-meta{color:#8e8893;font-size:12.5px;margin:10px 0 0}
+</style><style>
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Light.ttf') format('truetype');font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Book.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Regular.ttf') format('truetype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Heavy.ttf') format('truetype');font-weight:800;font-style:normal;font-display:swap}
+.site-shell,.page-hero,.page-hero h1,.page-hero .eyebrow,.page-hero .page-meta,.news-article,.news-article p,.news-article li,.news-article h1,.news-article h2,.news-article h3,.news-article strong,.news-article em,.news-article a,.news-article figcaption,.ae-feat,.ae-feat h2,.ae-tbl,.ae-cta{font-family:'Futura AE',Futura,system-ui,-apple-system,'Segoe UI',sans-serif}
+.news-article,.page-hero,.ae-feat{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+.news-article img,.news-article video,.news-article svg{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
+.ae-newsbanner{margin:0 auto 20px;max-width:min(1180px,100%);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.ae-newsbanner img{width:100%;height:auto;display:block}
+@media(max-width:640px){.ae-newsbanner{border-radius:10px;margin-bottom:12px}}
+</style><style>.ae-live3d{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#0c0b10;border:1px solid rgba(255,255,255,.09)}.ae-live3d canvas{width:100%;height:100%;display:block;cursor:grab}.ae-hud{position:absolute;left:12px;top:12px;z-index:3;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.5;color:#dbe7ff;background:rgba(6,10,20,.62);border:1px solid rgba(94,160,255,.4);border-radius:10px;padding:7px 11px;pointer-events:none}.ae-hud b{color:#5ea0ff;font-weight:700}.ae-hud .lo{color:#8e8893}.ae-fallback{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:24px;color:#c8cad2;font-size:13.5px}</style>
+<style>body{margin:0;background:#0b0a10;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:system-ui,-apple-system,sans-serif;color:#eceaff}main{width:min(94vw,960px)}.credit{margin-top:14px;font-size:12px;color:#8a86a0;text-align:center}.credit a{color:#a99bff;text-decoration:none}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head><body>
+<main>
+<figure class="ae-fig"><div class="ae-live3d"><canvas id="aefield" role="img" aria-label="AETumi live Three.js scene: an instanced field of thousands of objects rendered in a single draw call with distance-based level of detail"></canvas><div class="ae-hud" id="aehud" aria-hidden="true">Draw calls <b id="hcalls">–</b><br>Instances <b id="hins">–</b><br><span class="lo">high-LOD</span> <b id="hhi">–</b> · <span class="lo">low-LOD</span> <b id="hlo">–</b></div><div class="ae-fallback" id="aefb">Your browser could not start WebGL. The instanced field renders live where WebGL is available; the techniques below work without it.</div></div><figcaption>Live instanced field &mdash; thousands of objects drawn in one to two draw calls, with distant instances simplified by LOD. The counter reads <code>renderer.info.render.calls</code> from the real render loop.</figcaption></figure>
+<div class="credit">Live Three.js r160 + WebGL — by <a href="https://aetumi.app">AETumi</a> · <a href="https://aetumi.app/news/threejs-performance-instancing-lod/">article</a></div>
+</main>
+<script type="module">
+import * as THREE from 'three';
+(function(){
+  const canvas=document.getElementById('aefield');
+  const hud={c:document.getElementById('hcalls'),i:document.getElementById('hins'),hi:document.getElementById('hhi'),lo:document.getElementById('hlo')};
+  const fb=document.getElementById('aefb');
+  let renderer;
+  try{ renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'}); }
+  catch(e){ fb.style.display='flex'; return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(52,16/9,0.1,200);
+  scene.add(new THREE.HemisphereLight(0xbfd0ff,0x0a0f1e,1.15));
+  const dir=new THREE.DirectionalLight(0xffffff,1.1); dir.position.set(4,7,3); scene.add(dir);
+
+  // --- build an instanced field: near = high LOD, far = low LOD ---
+  const SIDE=46, GAP=0.62, HALF=(SIDE-1)*GAP/2, NEAR=8.5;
+  const hiGeo=new THREE.IcosahedronGeometry(0.2,2);   // smooth, more triangles
+  const loGeo=new THREE.IcosahedronGeometry(0.2,0);   // faceted, fewer triangles
+  const mat=new THREE.MeshStandardMaterial({metalness:0.55,roughness:0.35,color:0x5ea0ff,emissive:0x14243f,emissiveIntensity:0.6});
+  const cells=[];
+  for(let x=0;x<SIDE;x++)for(let z=0;z<SIDE;z++){
+    const px=x*GAP-HALF, pz=z*GAP-HALF, d=Math.hypot(px,pz);
+    cells.push({px,pz,d,hi:d<NEAR});
+  }
+  const hiCount=cells.filter(c=>c.hi).length, loCount=cells.length-hiCount;
+  const hiMesh=new THREE.InstancedMesh(hiGeo,mat,hiCount);
+  const loMesh=new THREE.InstancedMesh(loGeo,mat,loCount);
+  hiMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  loMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  scene.add(hiMesh,loMesh);
+  const dummy=new THREE.Object3D();
+  const list=[]; let hi=0,lo=0;
+  for(const c of cells){ const m=c.hi?hiMesh:loMesh, idx=c.hi?hi++:lo++; list.push({...c,mesh:m,idx}); }
+  function place(t){
+    for(const c of list){
+      const y=Math.sin(c.d*0.9-t*1.6)*0.45;
+      dummy.position.set(c.px,y,c.pz);
+      dummy.rotation.y=t*0.4+c.d*0.2;
+      dummy.updateMatrix();
+      c.mesh.setMatrixAt(c.idx,dummy.matrix);
+    }
+    hiMesh.instanceMatrix.needsUpdate=true;
+    loMesh.instanceMatrix.needsUpdate=true;
+  }
+
+  function resize(){ const w=canvas.clientWidth,h=canvas.clientHeight||1; renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
+  const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let visible=true;
+  try{ new IntersectionObserver(function(e){visible=e[0].isIntersecting;},{threshold:0.05}).observe(canvas); }catch(e){}
+  try{ new ResizeObserver(resize).observe(canvas); }catch(e){ window.addEventListener('resize',resize); }
+  function hudUpdate(){ if(hud.c)hud.c.textContent=renderer.info.render.calls; if(hud.i)hud.i.textContent=cells.length; if(hud.hi)hud.hi.textContent=hiCount; if(hud.lo)hud.lo.textContent=loCount; }
+  let running=false;
+  function frame(t){ if(!running)return; requestAnimationFrame(frame); if(!visible||canvas.clientHeight<2)return; const time=t*0.001; camera.position.set(Math.sin(time*0.15)*16,9.5,Math.cos(time*0.15)*16); camera.lookAt(0,0,0); place(time); renderer.render(scene,camera); hudUpdate(); }
+  function start(){ resize(); if(reduce){ camera.position.set(11,9.5,13); camera.lookAt(0,0,0); place(0.6); renderer.render(scene,camera); hudUpdate(); return; } running=true; requestAnimationFrame(frame); }
+  requestAnimationFrame(start);
+})();
+</script>
+</body></html>

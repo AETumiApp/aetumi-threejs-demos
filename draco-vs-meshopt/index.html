@@ -1,0 +1,170 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Draco vs Meshopt Compression — AETumi</title>
+<style>
+.news-article{font-size:15px;color:var(--muted)}
+.news-article>*{margin-left:0;margin-right:0}
+.news-article p{margin:0 0 13px;line-height:1.75}
+.news-article h2{font-family:'Futura AE',Futura,system-ui;font-size:22px;color:#f5f4f7;letter-spacing:-.02em;margin:32px 0 10px}
+.news-article h3{font-size:16px;color:#f0eff4;margin:20px 0 6px}
+.news-article a{color:#9fb4ff;text-decoration:none;border-bottom:1px solid rgba(159,180,255,.35)}
+.news-article ul{margin:0 0 14px;padding-left:20px}.news-article li{margin:0 0 6px}
+.news-article strong{color:#f5f4f7}.news-article em{color:#e7e6ee;font-style:italic}
+.news-article code{background:rgba(255,255,255,.06);padding:2px 6px;border-radius:6px;font-size:13.5px}
+.news-article blockquote{border-left:3px solid #7c5cff;margin:0 0 15px;padding:4px 0 4px 16px;color:#c8cad2}
+.news-article figure{margin:24px 0}
+.news-article figure svg,.news-article figure img,.news-article figure video{display:block;width:100%;height:auto;border-radius:14px}
+.news-article figcaption{color:#8e8893;font-size:12.5px;margin-top:8px;text-align:center}
+.ae-vwrap{margin:24px 0}
+.ae-vfig{position:relative;display:block;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.10);background:#0c0b10}
+.ae-vfig video,.ae-vfig img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:0}
+.ae-vtag{position:absolute;left:12px;bottom:12px;z-index:2;font-size:12px;color:#fff;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.18);padding:4px 11px;border-radius:100px}
+.ae-code{background:#0f0e15;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:15px 17px;overflow-x:auto;font-size:13px;line-height:1.6;margin:0 0 15px}
+.ae-code code{background:none;padding:0}
+.ae-tw{overflow-x:auto;margin:0 0 16px}
+.ae-tbl{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+.ae-tbl th,.ae-tbl td{text-align:left;padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.09);vertical-align:top}
+.ae-tbl th{color:#8e8893;font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:700}
+.ae-tbl td:first-child{color:#f5f4f7;font-weight:600}
+.ae-note{border:1px solid rgba(124,92,255,.3);background:rgba(124,92,255,.06);border-radius:12px;padding:14px 16px;margin:0 0 16px}
+.ae-note b{color:#c9b8ff}
+.ae-cta{display:inline-block;margin:8px 0 0;padding:12px 26px;border-radius:100px;background:linear-gradient(135deg,#7c5cff,#ff5ea8 60%,#33e1ff);color:#fff!important;font-weight:700;text-decoration:none;font-size:14px;border:0!important}
+.ae-feat{border-top:1px solid rgba(255,255,255,.09);margin:38px 0 0;padding:24px 0 0}
+.ae-feat h2{font-size:19px;margin:0 0 4px}
+.ae-feat .sub{color:#8e8893;font-size:13px;margin:0 0 14px}
+.ae-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ae-grid .ae-vwrap{margin:0}
+@media(max-width:560px){.ae-grid{grid-template-columns:1fr}}
+.news-hero .eyebrow{margin:0 0 4px}
+.news-hero .page-meta{color:#8e8893;font-size:12.5px;margin:10px 0 0}
+.ae-embed{margin:24px 0}
+.ae-stage{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.10);background:#0c0b10}
+.ae-stage canvas{position:absolute;inset:0;width:100%!important;height:100%!important;display:block}
+.ae-stage .ae-fallimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ae-ctrls{position:absolute;left:12px;bottom:12px;z-index:3;display:flex;gap:8px}
+.ae-ctrls button{font-family:inherit;font-size:12px;color:#e7e6ee;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.18);padding:6px 13px;border-radius:100px;cursor:pointer}
+.ae-ctrls button.on{background:#7c5cff;border-color:#7c5cff;color:#fff}
+.ae-badge{position:absolute;right:12px;top:12px;z-index:3;font-size:11px;letter-spacing:.05em;color:#cdccd6;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.16);padding:5px 11px;border-radius:100px}
+</style><style>
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Light.ttf') format('truetype');font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Book.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Regular.ttf') format('truetype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Heavy.ttf') format('truetype');font-weight:800;font-style:normal;font-display:swap}
+.site-shell,.page-hero,.page-hero h1,.page-hero .eyebrow,.page-hero .page-meta,.news-article,.news-article p,.news-article li,.news-article h1,.news-article h2,.news-article h3,.news-article strong,.news-article em,.news-article a,.news-article figcaption,.ae-feat,.ae-feat h2,.ae-tbl,.ae-cta{font-family:'Futura AE',Futura,system-ui,-apple-system,'Segoe UI',sans-serif}
+.ae-newsbanner{margin:0 auto 20px;max-width:min(1180px,100%);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.ae-newsbanner img{width:100%;height:auto;display:block}
+@media(max-width:640px){.ae-newsbanner{border-radius:10px;margin-bottom:12px}}
+</style><style>body{margin:0;background:#0b0a10;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:system-ui,sans-serif;color:#eceaff}main{width:min(94vw,960px)}.credit{margin-top:14px;font-size:12px;color:#8a86a0;text-align:center}.credit a{color:#a99bff;text-decoration:none}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head><body><main>
+<figure class="ae-embed"><div class="ae-stage" id="ae-stage"><img class="ae-fallimg" id="ae-fall" src="/images/proj/orb.webp" alt="Static preview of the vertex-streaming decode viewer" hidden><span class="ae-badge" id="ae-badge">MESHOPT · vertices snap to GPU-ready order</span><div class="ae-ctrls"><button id="ae-btn-mesh" class="on" type="button">Meshopt path</button><button id="ae-btn-draco" type="button">Draco path</button></div></div><figcaption>Vertices streaming in and assembling into the model surface — a real Three.js r160 scene, not a benchmark. Toggle the decode path to change how the mesh reconstructs.</figcaption></figure>
+<div class="credit">Live Three.js r160 + WebGL — by <a href="https://aetumi.app">AETumi</a> · <a href="https://aetumi.app/news/draco-vs-meshopt/">article</a></div>
+</main>
+<script type="module">
+const stage=document.getElementById('ae-stage');
+const fall=document.getElementById('ae-fall');
+const badge=document.getElementById('ae-badge');
+const bMesh=document.getElementById('ae-btn-mesh');
+const bDraco=document.getElementById('ae-btn-draco');
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let renderer,scene,camera,group,points,surface,edges,raf=0;
+let target,scatter,delay,count=0;
+const maxDelay=0.5;
+let mode='mesh',start=0;
+const clamp01=v=>v<0?0:v>1?1:v;
+const easeOutCubic=t=>1-Math.pow(1-t,3);
+const smooth=(a,b,x)=>{x=clamp01((x-a)/(b-a));return x*x*(3-2*x);};
+async function boot(){
+  let THREE;
+  try{ THREE=await import('three'); }catch(e){ return showFallback(); }
+  try{
+    const {OrbitControls}=await import('three/addons/controls/OrbitControls.js');
+    renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+    if(!renderer.getContext()) return showFallback();
+    const w=stage.clientWidth,h=stage.clientHeight;
+    renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+    renderer.setSize(w,h,false);
+    stage.insertBefore(renderer.domElement,stage.firstChild);
+    scene=new THREE.Scene();
+    camera=new THREE.PerspectiveCamera(45,w/h,0.1,100);
+    camera.position.set(0,0,4.4);
+    scene.add(new THREE.AmbientLight(0xffffff,0.75));
+    const key=new THREE.DirectionalLight(0xff8ad0,1.5); key.position.set(3,4,5); scene.add(key);
+    const rim=new THREE.DirectionalLight(0xc04df0,0.85); rim.position.set(-4,-2,-3); scene.add(rim);
+    group=new THREE.Group(); scene.add(group);
+    // target surface: a faceted sphere (deliberately NOT a torus knot)
+    const src=new THREE.IcosahedronGeometry(1.28,3);
+    target=src.attributes.position.array.slice(0);
+    count=target.length/3;
+    scatter=new Float32Array(target.length);
+    delay=new Float32Array(count);
+    const v=new THREE.Vector3();
+    for(let i=0;i<count;i++){
+      const i3=i*3;
+      v.set(target[i3],target[i3+1],target[i3+2]).normalize();
+      const r=2.4+Math.random()*1.6;
+      scatter[i3]=v.x*r+(Math.random()-0.5)*1.2;
+      scatter[i3+1]=v.y*r+(Math.random()-0.5)*1.2;
+      scatter[i3+2]=v.z*r+(Math.random()-0.5)*1.2;
+      delay[i]=Math.random()*maxDelay;
+    }
+    const pg=new THREE.BufferGeometry();
+    pg.setAttribute('position',new THREE.BufferAttribute(new Float32Array(target.length),3));
+    points=new THREE.Points(pg,new THREE.PointsMaterial({color:0xff5ea8,size:0.045,sizeAttenuation:true,transparent:true,opacity:1,depthWrite:false}));
+    group.add(points);
+    surface=new THREE.Mesh(src,new THREE.MeshStandardMaterial({color:0xc04df0,metalness:0.35,roughness:0.35,transparent:true,opacity:0,flatShading:true}));
+    group.add(surface);
+    edges=new THREE.LineSegments(new THREE.WireframeGeometry(src),new THREE.LineBasicMaterial({color:0xff7ad0,transparent:true,opacity:0}));
+    group.add(edges);
+    const controls=new OrbitControls(camera,renderer.domElement);
+    controls.enableZoom=false; controls.enablePan=false;
+    controls.autoRotate=!reduce; controls.autoRotateSpeed=1.1;
+    addEventListener('resize',onResize);
+    start=performance.now();
+    if(reduce){ stream(1); controls.update(); renderer.render(scene,camera); }
+    else{
+      const loop=(now)=>{
+        const period=mode==='draco'?6.8:4.6;
+        let tt=(((now-start)/1000)%period)/period, p;
+        if(tt<0.58) p=tt/0.58;
+        else if(tt<0.80) p=1;
+        else p=1-(tt-0.80)/0.20;
+        stream(p);
+        controls.update(); renderer.render(scene,camera);
+        raf=requestAnimationFrame(loop);
+      };
+      raf=requestAnimationFrame(loop);
+    }
+  }catch(e){ showFallback(); }
+}
+function stream(p){
+  const pos=points.geometry.attributes.position.array;
+  for(let i=0;i<count;i++){
+    const i3=i*3;
+    const local=mode==='draco'?clamp01((p-delay[i])/(1-maxDelay)):clamp01(p*1.05);
+    const e=easeOutCubic(local);
+    pos[i3]=scatter[i3]+(target[i3]-scatter[i3])*e;
+    pos[i3+1]=scatter[i3+1]+(target[i3+1]-scatter[i3+1])*e;
+    pos[i3+2]=scatter[i3+2]+(target[i3+2]-scatter[i3+2])*e;
+  }
+  points.geometry.attributes.position.needsUpdate=true;
+  paint(p);
+}
+function paint(p){
+  points.material.opacity=1-smooth(0.72,1.0,p)*0.85;
+  surface.material.opacity=smooth(0.66,1.0,p)*0.92;
+  const edgeMax=mode==='draco'?0.9:0.22;
+  edges.material.opacity=smooth(0.25,0.95,p)*edgeMax;
+}
+function onResize(){ if(!renderer) return; const w=stage.clientWidth,h=stage.clientHeight; camera.aspect=w/h; camera.updateProjectionMatrix(); renderer.setSize(w,h,false); }
+function showFallback(){ if(raf)cancelAnimationFrame(raf); fall.hidden=false; }
+function setPath(kind){
+  mode=kind;
+  if(kind==='draco'){ badge.textContent='DRACO · rebuild connectivity, vertices lock in region by region'; bDraco.classList.add('on'); bMesh.classList.remove('on'); }
+  else{ badge.textContent='MESHOPT · light unpack, vertices snap to GPU-ready order'; bMesh.classList.add('on'); bDraco.classList.remove('on'); }
+  start=performance.now();
+}
+bMesh.addEventListener('click',()=>setPath('mesh'));
+bDraco.addEventListener('click',()=>setPath('draco'));
+if('IntersectionObserver' in window){ const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){io.disconnect();boot();}});},{threshold:.1}); io.observe(stage);} else { boot(); }
+</script>
+</body></html>

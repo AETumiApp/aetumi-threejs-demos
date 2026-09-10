@@ -1,0 +1,200 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Three.js Scene Graph Visualizer — AETumi</title>
+<style id="ae-nf">.sale-bar s{visibility:hidden!important}</style><style>.card-stats span[title="Sold"],.card-stats span[title="Downloads"]{display:none!important}
+.reveal-card{opacity:1!important;transform:none!important;animation:none!important}
+.ln-wrap{max-width:1320px;margin:0 auto;padding:0 34px}
+.ln-hero{padding:54px 0 22px}
+.ln-ey{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8e8893;font-weight:700;margin:0 0 12px}
+.ln-hero h1{font-family:'Futura AE',Futura,system-ui;font-weight:700;font-size:clamp(30px,5vw,50px);line-height:1.04;letter-spacing:-.01em;margin:0 0 14px;background:linear-gradient(135deg,#33e1ff,#7c5cff 60%,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent;max-width:16ch}
+.ln-hero p{font-size:17px;color:#c8cad2;max-width:70ch;margin:0 0 20px;line-height:1.6}
+</style><style>
+.news-article{font-size:15px;color:var(--muted)}
+.news-article>*{margin-left:0;margin-right:0}
+.news-article p{margin:0 0 13px;line-height:1.75}
+.news-article h2{font-family:'Futura AE',Futura,system-ui;font-size:22px;color:#f5f4f7;letter-spacing:-.02em;margin:32px 0 10px}
+.news-article h3{font-size:16px;color:#f0eff4;margin:20px 0 6px}
+.news-article a{color:#9fb4ff;text-decoration:none;border-bottom:1px solid rgba(159,180,255,.35)}
+.news-article ul{margin:0 0 14px;padding-left:20px}.news-article li{margin:0 0 6px}
+.news-article strong{color:#f5f4f7}.news-article em{color:#e7e6ee;font-style:italic}
+.news-article code{background:rgba(255,255,255,.06);padding:2px 6px;border-radius:6px;font-size:13.5px}
+.news-article blockquote{border-left:3px solid #7c5cff;margin:0 0 15px;padding:4px 0 4px 16px;color:#c8cad2}
+.news-article figure{margin:24px 0}
+.news-article figure svg,.news-article figure img,.news-article figure video{display:block;width:100%;height:auto;border-radius:14px}
+.news-article figcaption{color:#8e8893;font-size:12.5px;margin-top:8px;text-align:center}
+.ae-vwrap{margin:24px 0}
+.ae-vfig{position:relative;display:block;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.10);background:#0c0b10}
+.ae-vfig video,.ae-vfig img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:0}
+.ae-vtag{position:absolute;left:12px;bottom:12px;z-index:2;font-size:12px;color:#fff;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.18);padding:4px 11px;border-radius:100px}
+.ae-code{background:#0f0e15;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:15px 17px;overflow-x:auto;font-size:13px;line-height:1.6;margin:0 0 15px}
+.ae-code code{background:none;padding:0}
+.ae-tw{overflow-x:auto;margin:0 0 16px}
+.ae-tbl{width:100%;border-collapse:collapse;font-size:14px;min-width:480px}
+.ae-tbl th,.ae-tbl td{text-align:left;padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.09);vertical-align:top}
+.ae-tbl th{color:#8e8893;font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:700}
+.ae-tbl td:first-child{color:#f5f4f7;font-weight:600}
+.ae-cta{display:inline-block;margin:8px 0 0;padding:12px 26px;border-radius:100px;background:linear-gradient(135deg,#7c5cff,#ff5ea8 60%,#33e1ff);color:#fff!important;font-weight:700;text-decoration:none;font-size:14px;border:0!important}
+.ae-feat{border-top:1px solid rgba(255,255,255,.09);margin:38px 0 0;padding:24px 0 0}
+.ae-feat h2{font-size:19px;margin:0 0 4px}
+.ae-feat .sub{color:#8e8893;font-size:13px;margin:0 0 14px}
+.ae-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ae-grid .ae-vwrap{margin:0}
+@media(max-width:560px){.ae-grid{grid-template-columns:1fr}}
+.news-hero .eyebrow{margin:0 0 4px}
+.news-hero .page-meta{color:#8e8893;font-size:12.5px;margin:10px 0 0}
+.ae-note{border:1px solid rgba(124,92,255,.35);background:rgba(124,92,255,.07);border-radius:12px;padding:14px 16px;margin:0 0 16px}
+.ae-note b{color:#c9bcff;display:block;margin:0 0 4px;font-size:13px;letter-spacing:.02em}
+.ae-embed{position:relative;margin:24px 0}
+.ae-embed .stage{position:relative;aspect-ratio:16/10;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.12);background:#0b0a10}
+.ae-embed canvas{display:block;width:100%;height:100%}
+.ae-embed .fallback{position:absolute;inset:0;display:none;place-items:center;text-align:center;padding:20px;color:#c8cad2;font-size:13px;background:radial-gradient(80% 70% at 50% 45%,#1a2740 0%,#12111a 60%,#0b0a10 100%)}
+.ae-embed .tag{position:absolute;left:12px;top:12px;z-index:3;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#cdccd6;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.16);padding:4px 11px;border-radius:100px}
+</style><style>
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Light.ttf') format('truetype');font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Book.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Regular.ttf') format('truetype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Heavy.ttf') format('truetype');font-weight:800;font-style:normal;font-display:swap}
+.site-shell,.page-hero,.page-hero h1,.page-hero .eyebrow,.page-hero .page-meta,.news-article,.news-article p,.news-article li,.news-article h1,.news-article h2,.news-article h3,.news-article strong,.news-article em,.news-article a,.news-article figcaption,.ae-feat,.ae-feat h2,.ae-tbl,.ae-cta{font-family:'Futura AE',Futura,system-ui,-apple-system,'Segoe UI',sans-serif}
+.news-article,.page-hero,.ae-feat{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+.news-article img,.news-article video,.news-article svg{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
+.ae-newsbanner{margin:0 auto 20px;max-width:min(1180px,100%);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.ae-newsbanner img{width:100%;height:auto;display:block}
+@media(max-width:640px){.ae-newsbanner{border-radius:10px;margin-bottom:12px}}
+</style>
+<style>body{margin:0;background:#0b0a10;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:system-ui,-apple-system,sans-serif;color:#eceaff}main{width:min(94vw,960px)}.credit{margin-top:14px;font-size:12px;color:#8a86a0;text-align:center}.credit a{color:#a99bff;text-decoration:none}</style>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}
+</script>
+</head><body>
+<main>
+<figure class="ae-embed"><span class="tag">Live · Three.js r160 · scene graph</span><div class="stage" id="ae-stage"><canvas id="ae-canvas" role="img" aria-label="An interactive Three.js scene graph: labelled node boxes — scene, world, camera, rig, mesh, light, core and a satellite — connected by lines into a parent-to-child tree. One root group rotates and every descendant node and connecting line inherits the transform, while one branch's subtree lights up at a time."></canvas><div class="fallback" id="ae-fallback" style="background:radial-gradient(80% 70% at 50% 45%,#241a44 0%,#141019 60%,#0b0a10 100%)">Your browser could not start WebGL, so this interactive scene is showing its static description instead: labelled node boxes connected by lines into a scene-graph tree — a rotating root group whose world, camera, rig, mesh, light, core and satellite nodes all inherit its transform, with one branch highlighted at a time.</div></div><figcaption>Live hero — a Three.js scene graph as labelled node boxes wired into a parent â†’ child tree; the root group rotates and every descendant node and connector moves with it. Hover a node to light its subtree.</figcaption></figure>
+<div class="credit">Live Three.js r160 + WebGL — by <a href="https://aetumi.app">AETumi</a> · <a href="https://aetumi.app/news/threejs-architecture/">article</a></div>
+</main>
+<script type="module">
+import * as THREE from 'three';
+(function(){
+  const canvas = document.getElementById('ae-canvas');
+  const stage  = document.getElementById('ae-stage');
+  const fallback = document.getElementById('ae-fallback');
+  if (!canvas || !stage) return;
+  let gl = null;
+  try { gl = canvas.getContext('webgl2') || canvas.getContext('webgl'); } catch (e) { gl = null; }
+  if (!gl) { if (fallback) fallback.style.display = 'grid'; return; }
+
+  const VIOLET = 0x7c5cff, LILAC = 0xa56bff, BASE_EMIT = 0x2a2150;
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));   // cap DPR
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0b0a10);
+  const camera = new THREE.PerspectiveCamera(42, 16/10, 0.1, 100);
+  camera.position.set(0, 0.15, 8.6);
+
+  scene.add(new THREE.HemisphereLight(0xc9bcff, 0x141018, 1.15));
+  const key = new THREE.DirectionalLight(0xffffff, 1.35); key.position.set(3, 5, 4); scene.add(key);
+
+  // ---- a labelled node = a small box + a text sprite ----
+  const boxGeo = new THREE.BoxGeometry(0.62, 0.62, 0.62);
+  const nodeMeshes = [];
+  function makeLabel(text){
+    const c = document.createElement('canvas'); c.width = 256; c.height = 72;
+    const x = c.getContext('2d');
+    x.font = 'bold 30px Arial, sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle';
+    x.fillStyle = '#f5f4f7'; x.fillText(text, 128, 40);
+    const tex = new THREE.CanvasTexture(c); tex.anisotropy = 4;
+    const spr = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false }));
+    spr.scale.set(1.5, 0.42, 1); spr.position.set(0, 0.66, 0);
+    return spr;
+  }
+  function node(label){
+    const g = new THREE.Group();
+    const mat = new THREE.MeshStandardMaterial({ color: VIOLET, roughness: 0.35, metalness: 0.25, emissive: new THREE.Color(BASE_EMIT), emissiveIntensity: 0.4 });
+    const box = new THREE.Mesh(boxGeo, mat);
+    box.userData.node = true; box.userData.mat = mat;
+    g.add(box); g.add(makeLabel(label));
+    nodeMeshes.push(box);
+    return g;
+  }
+  // parent a child AND draw its connector in the parent's local space, so the
+  // line inherits every transform the parent receives — that IS the scene graph.
+  function connect(parentGroup, childGroup){
+    const geo = new THREE.BufferGeometry().setFromPoints([ new THREE.Vector3(0,0,0), childGroup.position.clone() ]);
+    parentGroup.add(new THREE.Line(geo, new THREE.LineBasicMaterial({ color: LILAC, transparent: true, opacity: 0.5 })));
+    parentGroup.add(childGroup);
+  }
+
+  // ---- build the tree: root -> {world, camera, rig}; world -> {mesh, light}; rig -> core -> satellite
+  const root = new THREE.Group(); scene.add(root);
+  const rootNode = node('scene'); rootNode.position.set(0, 1.9, 0); root.add(rootNode); // on the rotation axis
+
+  const world  = node('world');  world.position.set(-2.4, -0.1, 0.2);
+  const camN   = node('camera'); camN.position.set(0, -0.1, -1.8);
+  const rig    = node('rig');    rig.position.set(2.4, -0.1, 0.2);
+  connect(rootNode, world); connect(rootNode, camN); connect(rootNode, rig);
+
+  const mesh  = node('mesh');  mesh.position.set(-1.0, -1.7, 0.1);
+  const light = node('light'); light.position.set(0.7, -1.7, -0.3);
+  connect(world, mesh); connect(world, light);
+
+  const core = node('core'); core.position.set(0.2, -1.7, 0.3);
+  connect(rig, core);
+  const sat = node('satellite'); sat.position.set(1.15, -0.2, 0.0);
+  connect(core, sat);   // deepest node: it orbits with core, which follows rig, which follows root
+
+  const subtrees = [world, camN, rig];   // top-level branches the auto-highlight cycles through
+  function resetAll(){
+    for (const m of nodeMeshes){ m.userData.mat.emissive.setHex(BASE_EMIT); m.userData.mat.emissiveIntensity = 0.4; m.scale.setScalar(1); }
+  }
+  function lightSubtree(group){
+    group.traverse((o)=>{ if (o.isMesh && o.userData.node){ o.userData.mat.emissive.setHex(LILAC); o.userData.mat.emissiveIntensity = 1.05; o.scale.setScalar(1.12); } });
+  }
+
+  // ---- hover: light the hovered node's whole subtree ----
+  const ray = new THREE.Raycaster(); const ndc = new THREE.Vector2(); let hovered = null;
+  canvas.addEventListener('pointermove', (ev)=>{
+    const r = canvas.getBoundingClientRect();
+    ndc.x = ((ev.clientX - r.left)/r.width)*2 - 1;
+    ndc.y = -((ev.clientY - r.top)/r.height)*2 + 1;
+    ray.setFromCamera(ndc, camera);
+    const hit = ray.intersectObjects(nodeMeshes, false)[0];
+    hovered = hit ? hit.object.parent : null;   // the node group
+  }, { passive: true });
+  canvas.addEventListener('pointerleave', ()=>{ hovered = null; }, { passive: true });
+
+  function size(){
+    const w = stage.clientWidth, h = stage.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h; camera.updateProjectionMatrix();
+  }
+  size();
+
+  const clock = new THREE.Clock();
+  let rafId = null, visible = true, autoIdx = 0, lastSwap = 0;
+  function draw(t){
+    root.rotation.y = t * 0.32;                    // rotate the ROOT — the whole tree inherits it
+    root.rotation.x = Math.sin(t * 0.35) * 0.09;
+    resetAll();
+    if (hovered){ lightSubtree(hovered); }
+    else {
+      if (t - lastSwap > 2.3){ lastSwap = t; autoIdx = (autoIdx + 1) % subtrees.length; }
+      lightSubtree(subtrees[autoIdx]);
+    }
+    renderer.render(scene, camera);                // the ONLY render() call
+  }
+  function frame(){ draw(clock.getElapsedTime()); rafId = requestAnimationFrame(frame); }
+  function start(){ if (rafId == null && visible && !document.hidden) rafId = requestAnimationFrame(frame); }
+  function stop(){ if (rafId != null){ cancelAnimationFrame(rafId); rafId = null; } }
+
+  if (reduceMotion){ draw(0.6); }                  // one representative static frame, no animation
+  else {
+    const io = new IntersectionObserver((es)=>{ visible = es[0].isIntersecting; visible ? start() : stop(); }, { threshold: 0.05 });
+    io.observe(stage);
+    document.addEventListener('visibilitychange', ()=>{ document.hidden ? stop() : start(); });
+    start();
+  }
+  addEventListener('resize', size, { passive: true });
+})();
+</script>
+</body></html>

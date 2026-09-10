@@ -1,0 +1,123 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KTX2 / Basis Texture Compression — AETumi</title>
+<style>
+.news-article{font-size:15px;color:var(--muted)}
+.news-article>*{margin-left:0;margin-right:0}
+.news-article p{margin:0 0 13px;line-height:1.75}
+.news-article h2{font-family:'Futura AE',Futura,system-ui;font-size:22px;color:#f5f4f7;letter-spacing:-.02em;margin:32px 0 10px}
+.news-article h3{font-size:16px;color:#f0eff4;margin:20px 0 6px}
+.news-article a{color:#9fb4ff;text-decoration:none;border-bottom:1px solid rgba(159,180,255,.35)}
+.news-article ul{margin:0 0 14px;padding-left:20px}.news-article li{margin:0 0 6px}
+.news-article strong{color:#f5f4f7}.news-article em{color:#e7e6ee;font-style:italic}
+.news-article code{background:rgba(255,255,255,.06);padding:2px 6px;border-radius:6px;font-size:13.5px}
+.news-article blockquote{border-left:3px solid #ffb84d;margin:0 0 15px;padding:4px 0 4px 16px;color:#c8cad2}
+.news-article figure{margin:24px 0}
+.news-article figure svg,.news-article figure img,.news-article figure video{display:block;width:100%;height:auto;border-radius:14px}
+.news-article figcaption{color:#8e8893;font-size:12.5px;margin-top:8px;text-align:center}
+.ae-vwrap{margin:24px 0}
+.ae-vfig{position:relative;display:block;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.10);background:#0c0b10}
+.ae-vfig video,.ae-vfig img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:0}
+.ae-vtag{position:absolute;left:12px;bottom:12px;z-index:2;font-size:12px;color:#fff;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.18);padding:4px 11px;border-radius:100px}
+.ae-code{background:#0f0e15;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:15px 17px;overflow-x:auto;font-size:13px;line-height:1.6;margin:0 0 15px}
+.ae-code code{background:none;padding:0}
+.ae-tw{overflow-x:auto;margin:0 0 16px}
+.ae-tbl{width:100%;border-collapse:collapse;font-size:14px;min-width:480px}
+.ae-tbl th,.ae-tbl td{text-align:left;padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.09);vertical-align:top}
+.ae-tbl th{color:#8e8893;font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:700}
+.ae-tbl td:first-child{color:#f5f4f7;font-weight:600}
+.ae-note{border:1px solid rgba(255,184,77,.28);background:rgba(255,184,77,.05);border-radius:12px;padding:14px 16px;margin:0 0 16px}
+.ae-note b{color:#ffb84d}
+.ae-cta{display:inline-block;margin:8px 0 0;padding:12px 26px;border-radius:100px;background:linear-gradient(135deg,#ffb84d,#ff8a3d);color:#1a1206!important;font-weight:700;text-decoration:none;font-size:14px;border:0!important}
+.ae-feat{border-top:1px solid rgba(255,255,255,.09);margin:38px 0 0;padding:24px 0 0}
+.ae-feat h2{font-size:19px;margin:0 0 4px}
+.ae-feat .sub{color:#8e8893;font-size:13px;margin:0 0 14px}
+.ae-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ae-grid .ae-vwrap{margin:0}
+.ae-hash{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 4px}
+.ae-hash span{font-size:12.5px;color:#ffb84d;padding:5px 12px;border-radius:100px;border:1px solid rgba(255,184,77,.3);background:rgba(255,184,77,.04)}
+@media(max-width:560px){.ae-grid,.ae-feat3{grid-template-columns:1fr}}
+.news-hero .eyebrow{margin:0 0 4px}
+.news-hero .page-meta{color:#8e8893;font-size:12.5px;margin:10px 0 0}
+.ae-live3d{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#0c0b10;border:1px solid rgba(255,255,255,.09)}
+.ae-live3d canvas{width:100%;height:100%;display:block}
+.ae-live3d.ae-3d-fallback{background:linear-gradient(135deg,#141017,#0c0b10)}
+.ae-live3d .ae-3d-fb{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:20px;color:#ffb84d;font-size:13px}
+.ae-live3d.ae-3d-fallback .ae-3d-fb{display:flex}
+</style><style>
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Light.ttf') format('truetype');font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Book.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Regular.ttf') format('truetype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Heavy.ttf') format('truetype');font-weight:800;font-style:normal;font-display:swap}
+.site-shell,.page-hero,.page-hero h1,.page-hero .eyebrow,.page-hero .page-meta,.news-article,.news-article p,.news-article li,.news-article h1,.news-article h2,.news-article h3,.news-article strong,.news-article em,.news-article a,.news-article figcaption,.ae-feat,.ae-feat h2,.ae-tbl,.ae-cta{font-family:'Futura AE',Futura,system-ui,-apple-system,'Segoe UI',sans-serif}
+.news-article,.page-hero,.ae-feat{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+.news-article img,.news-article video,.news-article svg{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
+.ae-newsbanner{margin:0 auto 20px;max-width:min(1180px,100%);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.ae-newsbanner img{width:100%;height:auto;display:block}
+@media(max-width:640px){.ae-newsbanner{border-radius:10px;margin-bottom:12px}}
+</style>
+<style>body{margin:0;background:#0b0a10;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:system-ui,-apple-system,sans-serif;color:#eceaff}main{width:min(94vw,960px)}.credit{margin-top:14px;font-size:12px;color:#8a86a0;text-align:center}.credit a{color:#a99bff;text-decoration:none}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+</head><body>
+<main>
+<figure class="ae-fig"><div class="ae-live3d" id="ktx2-hero-box"><canvas id="ktx2-hero" role="img" aria-label="Live WebGL scene: a plane stepping through texture compression tiers next to a stacked mipmap pyramid of shrinking textured quads"></canvas><div class="ae-3d-fb">Live texture demo needs WebGL. The left plane steps through RGBA8, ETC1S, UASTC and KTX2 quality tiers; the right stack shows the mipmap pyramid.</div></div><figcaption>Live Three.js scene — left: one plane cycling RGBA8 â†’ ETC1S â†’ UASTC â†’ KTX2 so the block artifacts and clean tiers are visible; right: a stacked mipmap pyramid of shrinking textured quads. Real-time WebGL, not a video.</figcaption></figure>
+<div class="credit">Live Three.js r160 + WebGL — by <a href="https://aetumi.app">AETumi</a> · <a href="https://aetumi.app/news/ktx2-basis-texture-compression-threejs/">article</a></div>
+</main>
+<script type="module">
+import * as THREE from 'three';
+(function(){
+  const canvas = document.getElementById('ktx2-hero');
+  const box = document.getElementById('ktx2-hero-box');
+  if(!canvas||!box) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function basePattern(size){
+    const c = Object.assign(document.createElement('canvas'), {width:size,height:size});
+    const x = c.getContext('2d');
+    x.fillStyle='#141017'; x.fillRect(0,0,size,size);
+    const s=size/8;
+    for(let j=0;j<8;j++)for(let i=0;i<8;i++){x.fillStyle=(i+j)%2?'#ffb84d':'#ff8a3d';x.globalAlpha=0.25+0.75*Math.abs(Math.sin((i+1)*(j+1)));x.fillRect(i*s+2,j*s+2,s-4,s-4);}
+    x.globalAlpha=1;x.strokeStyle='#ffd9a0';x.lineWidth=size/128;
+    for(let r=size/12;r<size;r+=size/12){x.beginPath();x.arc(size/2,size/2,r,0,6.2832);x.stroke();}
+    return c;
+  }
+  function labelStrip(x,size,label){x.fillStyle='rgba(10,7,14,.82)';x.fillRect(0,size-30,size,30);x.fillStyle='#ffb84d';x.font='700 15px system-ui';x.textAlign='center';x.fillText(label,size/2,size-10);}
+  function blockify(src,block,steps,label){
+    const size=src.width;const c=Object.assign(document.createElement('canvas'),{width:size,height:size});const x=c.getContext('2d');
+    const d=src.getContext('2d').getImageData(0,0,size,size).data;
+    for(let by=0;by<size;by+=block)for(let bx=0;bx<size;bx+=block){let r=0,g=0,b=0,n=0;
+      for(let y=0;y<block;y++)for(let xx=0;xx<block;xx++){const p=((by+y)*size+(bx+xx))*4;r+=d[p];g+=d[p+1];b+=d[p+2];n++;}
+      const q=v=>Math.round(Math.round((v/n)/255*steps)/steps*255);x.fillStyle='rgb('+q(r)+','+q(g)+','+q(b)+')';x.fillRect(bx,by,block,block);}
+    labelStrip(x,size,label);return c;
+  }
+  let renderer;
+  try{renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});}
+  catch(e){box.classList.add('ae-3d-fallback');return;}
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  const scene=new THREE.Scene();
+  const cam=new THREE.PerspectiveCamera(45,16/9,0.1,100);cam.position.set(0,0,6);
+  const base=basePattern(256);
+  const clean=(function(){const c=basePattern(256);labelStrip(c.getContext('2d'),256,'RGBA8 · uncompressed');return c;})();
+  const kt=(function(){const c=basePattern(256);labelStrip(c.getContext('2d'),256,'KTX2 · GPU native');return c;})();
+  const tiers=[clean,blockify(base,16,4,'ETC1S · blocky'),blockify(base,4,16,'UASTC · near-lossless'),kt].map(function(cv){var t=new THREE.CanvasTexture(cv);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=4;return t;});
+  const planeMat=new THREE.MeshBasicMaterial({map:tiers[0]});
+  const plane=new THREE.Mesh(new THREE.PlaneGeometry(3.4,3.4),planeMat);plane.position.x=-2.1;scene.add(plane);
+  const pyr=new THREE.Group();pyr.position.x=2.2;
+  [256,128,64,32,16,8].forEach(function(sz,i){const cv=Object.assign(document.createElement('canvas'),{width:sz,height:sz});cv.getContext('2d').drawImage(base,0,0,sz,sz);var t=new THREE.CanvasTexture(cv);t.magFilter=THREE.NearestFilter;t.colorSpace=THREE.SRGBColorSpace;var w=2.6*Math.pow(0.72,i);var q=new THREE.Mesh(new THREE.PlaneGeometry(w,w),new THREE.MeshBasicMaterial({map:t}));q.position.set(0,1.7-i*0.62,-i*0.34);pyr.add(q);});
+  scene.add(pyr);
+  let vis=true;
+  try{new IntersectionObserver(function(e){vis=e[0].isIntersecting;}).observe(canvas);}catch(e){}
+  let tier=0,last=0,lw=0,lh=0;
+  function frame(t){
+    if(!vis){requestAnimationFrame(frame);return;}
+    var w=box.clientWidth,h=box.clientHeight;
+    if(w>=2&&h>=2&&(w!==lw||h!==lh)){lw=w;lh=h;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();}
+    if(reduce){if(lw){renderer.render(scene,cam);}else{requestAnimationFrame(frame);}return;}
+    if(t-last>1600){last=t;tier=(tier+1)%tiers.length;planeMat.map=tiers[tier];planeMat.needsUpdate=true;}
+    plane.rotation.y=Math.sin(t/1400)*0.25;pyr.rotation.y=Math.sin(t/1800)*0.20;
+    renderer.render(scene,cam);requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body></html>

@@ -1,0 +1,146 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>glTF / GLB Optimization Demo — AETumi</title>
+<style id="ae-nf">.sale-bar s{visibility:hidden!important}</style><style>.card-stats span[title="Sold"],.card-stats span[title="Downloads"]{display:none!important}
+.reveal-card{opacity:1!important;transform:none!important;animation:none!important}
+.ln-wrap{max-width:1320px;margin:0 auto;padding:0 34px}
+.ln-hero{padding:54px 0 22px}
+.ln-ey{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8e8893;font-weight:700;margin:0 0 12px}
+.ln-hero h1{font-family:'Futura AE',Futura,system-ui;font-weight:700;font-size:clamp(30px,5vw,50px);line-height:1.04;letter-spacing:-.01em;margin:0 0 14px;background:linear-gradient(135deg,#33e1ff,#7c5cff 60%,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent;max-width:16ch}
+.ln-hero p{font-size:17px;color:#c8cad2;max-width:70ch;margin:0 0 20px;line-height:1.6}
+.ln-sec{padding:26px 0 10px}
+</style><style>
+.news-article{font-size:15px;color:var(--muted)}
+.news-article>*{margin-left:0;margin-right:0}
+.news-article p{margin:0 0 13px;line-height:1.75}
+.news-article h2{font-family:'Futura AE',Futura,system-ui;font-size:22px;color:#f5f4f7;letter-spacing:-.02em;margin:32px 0 10px}
+.news-article h3{font-size:16px;color:#f0eff4;margin:20px 0 6px}
+.news-article a{color:#9fb4ff;text-decoration:none;border-bottom:1px solid rgba(159,180,255,.35)}
+.news-article ul{margin:0 0 14px;padding-left:20px}.news-article li{margin:0 0 6px}
+.news-article strong{color:#f5f4f7}.news-article em{color:#e7e6ee;font-style:italic}
+.news-article code{background:rgba(255,255,255,.06);padding:2px 6px;border-radius:6px;font-size:13.5px}
+.news-article blockquote{border-left:3px solid #7c5cff;margin:0 0 15px;padding:4px 0 4px 16px;color:#c8cad2}
+.news-article figure{margin:24px 0}
+.news-article figure svg,.news-article figure img,.news-article figure video{display:block;width:100%;height:auto;border-radius:14px}
+.news-article figcaption{color:#8e8893;font-size:12.5px;margin-top:8px;text-align:center}
+.ae-note{border:1px solid rgba(124,92,255,.34);background:linear-gradient(180deg,rgba(124,92,255,.08),rgba(124,92,255,.02));border-radius:14px;padding:15px 18px;margin:0 0 16px}
+.ae-note b{color:#c9bcff;font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:block;margin:0 0 5px}
+.ae-note p{margin:0}
+.ae-vwrap{margin:24px 0}
+.ae-vfig{position:relative;display:block;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.10);background:#0c0b10}
+.ae-vfig video,.ae-vfig img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:0}
+.ae-vtag{position:absolute;left:12px;bottom:12px;z-index:2;font-size:12px;color:#fff;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.18);padding:4px 11px;border-radius:100px}
+.ae-code{background:#0f0e15;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:15px 17px;overflow-x:auto;font-size:13px;line-height:1.6;margin:0 0 15px}
+.ae-code code{background:none;padding:0}
+.ae-tw{overflow-x:auto;margin:0 0 16px}
+.ae-tbl{width:100%;border-collapse:collapse;font-size:14px;min-width:480px}
+.ae-tbl th,.ae-tbl td{text-align:left;padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.09);vertical-align:top}
+.ae-tbl th{color:#8e8893;font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:700}
+.ae-tbl td:first-child{color:#f5f4f7;font-weight:600}
+.ae-cta{display:inline-block;margin:8px 0 0;padding:12px 26px;border-radius:100px;background:linear-gradient(135deg,#7c5cff,#ff5ea8 60%,#33e1ff);color:#fff!important;font-weight:700;text-decoration:none;font-size:14px;border:0!important}
+.ae-feat{border-top:1px solid rgba(255,255,255,.09);margin:38px 0 0;padding:24px 0 0}
+.ae-feat h2{font-size:19px;margin:0 0 4px}
+.ae-feat .sub{color:#8e8893;font-size:13px;margin:0 0 14px}
+.ae-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ae-grid .ae-vwrap{margin:0}
+@media(max-width:560px){.ae-grid{grid-template-columns:1fr}}
+.news-hero .eyebrow{margin:0 0 4px}
+.news-hero .page-meta{color:#8e8893;font-size:12.5px;margin:10px 0 0}
+</style><style>
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Light.ttf') format('truetype');font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Book.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Regular.ttf') format('truetype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Futura AE';src:url('/fonts/Futura-Heavy.ttf') format('truetype');font-weight:800;font-style:normal;font-display:swap}
+.site-shell,.page-hero,.page-hero h1,.page-hero .eyebrow,.page-hero .page-meta,.news-article,.news-article p,.news-article li,.news-article h1,.news-article h2,.news-article h3,.news-article strong,.news-article em,.news-article a,.news-article figcaption,.ae-feat,.ae-feat h2,.ae-tbl,.ae-cta{font-family:'Futura AE',Futura,system-ui,-apple-system,'Segoe UI',sans-serif}
+.news-article,.page-hero,.ae-feat{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+.news-article img,.news-article video,.news-article svg{-webkit-user-drag:none;user-drag:none;pointer-events:auto}
+.ae-newsbanner{margin:0 auto 20px;max-width:min(1180px,100%);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.ae-newsbanner img{width:100%;height:auto;display:block}
+@media(max-width:640px){.ae-newsbanner{border-radius:10px;margin-bottom:12px}}
+</style><style>.ae-live3d{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#0c0b10;border:1px solid rgba(255,255,255,.09)}.ae-live3d canvas{width:100%;height:100%;display:block;cursor:grab}.ae-live3d .ae-3dtag{position:absolute;left:12px;top:12px;z-index:2;font-size:11px;letter-spacing:.05em;color:#cdd3ff;background:rgba(10,8,20,.55);border:1px solid rgba(124,92,255,.35);padding:4px 10px;border-radius:100px}.ae-live3d .ae-3dctl{position:absolute;right:12px;bottom:12px;z-index:3;display:flex;gap:6px}.ae-live3d .ae-3dctl button{font-family:'Futura AE',Futura,system-ui;font-size:11px;color:#cdd3ff;background:rgba(10,8,20,.6);border:1px solid rgba(124,92,255,.35);padding:5px 12px;border-radius:100px;cursor:pointer}.ae-live3d .ae-3dctl button.on{background:#7c5cff;border-color:#7c5cff;color:#fff}.ae-live3d .ae-3dstat{position:absolute;left:12px;bottom:12px;z-index:3;font-size:11px;color:#9aa0c0;background:rgba(10,8,20,.55);border:1px solid rgba(255,255,255,.12);padding:4px 10px;border-radius:100px}.ae-live3d .ae-3dfb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;color:#8e8893;font-size:13px;padding:22px;z-index:4}</style>
+<style>body{margin:0;background:#0b0a10;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:system-ui,-apple-system,sans-serif;color:#eceaff}main{width:min(94vw,960px)}.credit{margin-top:14px;font-size:12px;color:#8a86a0;text-align:center}.credit a{color:#a99bff;text-decoration:none}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+</head><body>
+<main>
+<figure class="ae-fig"><div class="ae-live3d"><span class="ae-3dtag">Live · Three.js · wireframe decimation</span><canvas id="ae3d_lod" role="img" aria-label="AETumi live Three.js scene: one icosphere model drawn as a wireframe whose triangle density drops from a dense high-poly mesh to a light optimized mesh, with a live triangle counter"></canvas><div class="ae-3dstat" id="ae3d_stat">loading…</div><div class="ae-3dctl" role="group" aria-label="Model detail level"><button data-q="0">Low</button><button data-q="1">Balanced</button><button data-q="2" class="on">High</button></div><div class="ae-3dfb" id="ae3d_fb">Interactive 3D model — enable WebGL and JavaScript to watch triangle density collapse across detail tiers. A static AERAE preview is shown in the media proof below.</div></div><figcaption>Live decimation demo — one icosphere model drawn as a wireframe at three geometry densities. It auto-steps High â†’ Balanced â†’ Low (or use the buttons) and the counter shows the triangle count collapsing from 5,120 down to 80 as the mesh is optimized. Real Three.js, rendered in your browser, not a video.</figcaption></figure>
+<div class="credit">Live Three.js r160 + WebGL — by <a href="https://aetumi.app">AETumi</a> · <a href="https://aetumi.app/news/optimize-gltf-glb-threejs/">article</a></div>
+</main>
+<script type="module">
+import * as THREE from 'three';
+(function(){
+  var canvas = document.getElementById('ae3d_lod');
+  var statEl = document.getElementById('ae3d_stat');
+  var fbEl   = document.getElementById('ae3d_fb');
+  var ctl    = document.querySelector('.ae-3dctl');
+  if(!canvas) return;
+  // WebGL support probe + graceful fallback
+  try {
+    var test = document.createElement('canvas');
+    if(!(test.getContext('webgl') || test.getContext('experimental-webgl'))) return;
+  } catch(e){ return; }
+  var renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true }); }
+  catch(e){ return; }
+  if(fbEl) fbEl.style.display = 'none';                  // init succeeded: hide fallback
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  var scene = new THREE.Scene();
+  var cam = new THREE.PerspectiveCamera(50, 16/9, 0.1, 100);
+  cam.position.set(0, 0, 4.2);
+  scene.add(new THREE.HemisphereLight(0xbfe9ff, 0x0a0a18, 1.1));
+  var dir = new THREE.DirectionalLight(0xffffff, 0.9); dir.position.set(3, 4, 3); scene.add(dir);
+  // three DETAIL levels of the SAME icosphere model - decimation made visible.
+  // IcosahedronGeometry(radius, detail): triangle count = 20 * (detail+1)^2
+  var tiers = [ { label:'Low', detail:1, tex:'512Â²' },
+                { label:'Balanced', detail:5, tex:'1024Â²' },
+                { label:'High', detail:15, tex:'2048Â²' } ];
+  var wireMat = new THREE.MeshBasicMaterial({ color: 0x33e1ff, wireframe: true, transparent: true, opacity: 0.92 });
+  var fillMat = new THREE.MeshStandardMaterial({ color: 0x07161c, roughness: 0.6, metalness: 0.2, emissive: 0x0c3d44, emissiveIntensity: 0.45, transparent: true, opacity: 0.55 });
+  var group = new THREE.Group(); scene.add(group);
+  var meshes = tiers.map(function(t){
+    var g = new THREE.IcosahedronGeometry(1.35, t.detail);
+    var holder = new THREE.Group();
+    holder.add(new THREE.Mesh(g, fillMat));
+    holder.add(new THREE.Mesh(g, wireMat));
+    holder.visible = false;
+    holder.userData.tris = g.index ? g.index.count/3 : g.attributes.position.count/3;
+    group.add(holder); return holder;
+  });
+  var labels = tiers.map(function(t){ return t.label; });
+  var current = 2, auto = true;                          // start High, auto-decimate until user acts
+  function show(q){
+    meshes.forEach(function(m,i){ m.visible = (i===q); });
+    current = q;
+    var t = tiers[q];
+    if(statEl) statEl.textContent = t.label + ' · ' + Math.round(meshes[q].userData.tris).toLocaleString() + ' triangles · tex ' + t.tex;
+    if(ctl) ctl.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', +b.dataset.q === q); });
+  }
+  if(ctl) ctl.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return; auto = false; show(+b.dataset.q);
+  });
+  show(2);
+  var order = [2,1,0], oi = 0, acc = 0;                  // High -> Balanced -> Low, density visibly drops
+  function size(){
+    var w = canvas.clientWidth, h = canvas.clientHeight || Math.round(w*9/16);
+    renderer.setSize(w, h, false); cam.aspect = w/Math.max(1,h); cam.updateProjectionMatrix();
+  }
+  var reduce = false;
+  try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e){}
+  var vis = true;
+  try { new IntersectionObserver(function(en){ vis = en[0].isIntersecting; }).observe(canvas); } catch(e){}
+  try { new ResizeObserver(function(){ size(); }).observe(canvas); } catch(e){ window.addEventListener('resize', size); }
+  var last = performance.now();
+  function loop(now){
+    requestAnimationFrame(loop);                         // single rAF
+    if(!vis || canvas.clientHeight < 2) return;          // IO gate
+    var dt = (now - last)/1000; last = now;
+    if(!reduce){ group.rotation.y += 0.25*dt; group.rotation.x = 0.32; }
+    if(auto && !reduce){ acc += dt; if(acc >= 1.6){ acc = 0; oi = (oi+1)%order.length; show(order[oi]); } }
+    renderer.render(scene, cam);
+  }
+  size();
+  if(reduce){ show(2); group.rotation.set(0.32, 0.6, 0); }  // reduced-motion: static high-poly
+  requestAnimationFrame(loop);
+})();
+</script>
+</body></html>
